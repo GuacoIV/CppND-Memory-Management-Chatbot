@@ -54,7 +54,7 @@ ChatBot& ChatBot::operator=(const ChatBot &source)
     _image = new wxBitmap(*source._image);
     
     delete _chatLogic;
-    _chatLogic = new ChatLogic(*source._chatLogic);
+    _chatLogic = source._chatLogic;
 
     delete _rootNode;
     _rootNode = new GraphNode(*source._rootNode);
@@ -66,7 +66,7 @@ ChatBot::ChatBot(const ChatBot& source)
     std::cout << "ChatBot Copy Constructor" << std::endl;
 
     _image = new wxBitmap(*source._image);
-    _chatLogic = new ChatLogic(*source._chatLogic);
+    _chatLogic = source._chatLogic;
     _rootNode = new GraphNode(*source._rootNode);
 }
 ChatBot::ChatBot(ChatBot&& source)
