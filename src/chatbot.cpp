@@ -56,8 +56,8 @@ ChatBot& ChatBot::operator=(const ChatBot &source)
     delete _chatLogic;
     _chatLogic = source._chatLogic;
 
-    delete _rootNode;
-    _rootNode = new GraphNode(*source._rootNode);
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
 
     return *this;
 }
@@ -67,7 +67,8 @@ ChatBot::ChatBot(const ChatBot& source)
 
     _image = new wxBitmap(*source._image);
     _chatLogic = source._chatLogic;
-    _rootNode = new GraphNode(*source._rootNode);
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
 }
 ChatBot::ChatBot(ChatBot&& source)
 {
@@ -76,10 +77,12 @@ ChatBot::ChatBot(ChatBot&& source)
     _image = source._image;
     _chatLogic = source._chatLogic;
     _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
     
     source._image = NULL;
     source._chatLogic = nullptr;
     source._rootNode = nullptr;
+    source._currentNode = nullptr;
 }
 ChatBot& ChatBot::operator=(ChatBot&& source)
 {
@@ -96,9 +99,11 @@ ChatBot& ChatBot::operator=(ChatBot&& source)
     _chatLogic = source._chatLogic;
     source._chatLogic = nullptr;
 
-    delete _rootNode;
     _rootNode = source._rootNode;
     source._rootNode = nullptr;
+
+    _currentNode = source._currentNode;
+    source._currentNode = nullptr;
 }
 ////
 //// EOF STUDENT CODE
