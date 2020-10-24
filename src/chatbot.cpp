@@ -50,12 +50,11 @@ ChatBot& ChatBot::operator=(const ChatBot &source)
     if (this == &source)
         return *this;
 
-    delete _image;
-    _image = new wxBitmap(*source._image);
-    
-    delete _chatLogic;
+    if (_image != NULL)
+        delete _image;
+    _image = new wxBitmap(*source._image); //actually uses reference counting
     _chatLogic = source._chatLogic;
-
+    _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
 
@@ -65,8 +64,9 @@ ChatBot::ChatBot(const ChatBot& source)
 {
     std::cout << "ChatBot Copy Constructor" << std::endl;
 
-    _image = new wxBitmap(*source._image);
+    _image = new wxBitmap(*source._image); //actually uses reference counting
     _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
 }
@@ -76,6 +76,7 @@ ChatBot::ChatBot(ChatBot&& source)
 
     _image = source._image;
     _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
     
@@ -90,20 +91,22 @@ ChatBot& ChatBot::operator=(ChatBot&& source)
 
     if (this == &source)
         return *this;
+
+    if (_image != NULL)
+        delete _image;
     
-    delete _image;
     _image = source._image;
-    source._image = NULL;
-
-    delete _chatLogic;
     _chatLogic = source._chatLogic;
-    source._chatLogic = nullptr;
-
+    _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
-    source._rootNode = nullptr;
-
     _currentNode = source._currentNode;
+
+    source._image = NULL;
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
     source._currentNode = nullptr;
+
+    return *this;
 }
 ////
 //// EOF STUDENT CODE
